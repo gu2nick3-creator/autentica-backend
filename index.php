@@ -4,28 +4,15 @@ declare(strict_types=1);
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
-require __DIR__ . '/backend/src/Support/helpers.php';
+$allowedOrigins = [
+    'https://www.autenticafashionf.store',
+    'https://autenticafashionf.store',
+    'https://www.autenticafashionof.store',
+    'https://autenticafashionof.store',
+];
 
-$allowedOrigins = [];
-$frontendUrls = (string) env('APP_FRONTEND_URLS', '');
-if ($frontendUrls !== '') {
-    foreach (explode(',', $frontendUrls) as $url) {
-        $url = rtrim(trim($url), '/');
-        if ($url !== '') {
-            $allowedOrigins[] = $url;
-        }
-    }
-}
-
-$singleFrontend = rtrim((string) config('app.frontend_url', ''), '/');
-if ($singleFrontend !== '') {
-    $allowedOrigins[] = $singleFrontend;
-}
-
-$allowedOrigins = array_values(array_unique(array_filter($allowedOrigins)));
-
-if ($origin !== '' && in_array(rtrim($origin, '/'), $allowedOrigins, true)) {
-    header('Access-Control-Allow-Origin: ' . rtrim($origin, '/'));
+if (in_array($origin, $allowedOrigins, true)) {
+    header("Access-Control-Allow-Origin: {$origin}");
     header('Access-Control-Allow-Credentials: true');
 }
 
@@ -39,6 +26,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
     exit;
 }
 
+require __DIR__ . '/src/Support/helpers.php';
+
 spl_autoload_register(function (string $class): void {
     $prefix = 'App\\';
 
@@ -47,7 +36,7 @@ spl_autoload_register(function (string $class): void {
     }
 
     $relative = substr($class, strlen($prefix));
-    $file = __DIR__ . '/backend/src/' . str_replace('\\', '/', $relative) . '.php';
+    $file = __DIR__ . '/src/' . str_replace('\\', '/', $relative) . '.php';
 
     if (is_file($file)) {
         require $file;
