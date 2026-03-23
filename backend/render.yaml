@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: autentica-fashion-api
-    runtime: docker
-    rootDir: backend
-    plan: free
-    autoDeploy: true
