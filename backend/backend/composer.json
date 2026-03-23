@@ -1,0 +1,11 @@
+{
+  "name": "autentica-fashion/backend",
+  "description": "Backend PHP para loja Autentica Fashion",
+  "type": "project",
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
+}
