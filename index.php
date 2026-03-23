@@ -26,7 +26,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
     exit;
 }
 
-require __DIR__ . '/src/Support/helpers.php';
+require __DIR__ . '/backend/src/Support/helpers.php';
 
 spl_autoload_register(function (string $class): void {
     $prefix = 'App\\';
@@ -36,7 +36,7 @@ spl_autoload_register(function (string $class): void {
     }
 
     $relative = substr($class, strlen($prefix));
-    $file = __DIR__ . '/src/' . str_replace('\\', '/', $relative) . '.php';
+    $file = __DIR__ . '/backend/src/' . str_replace('\\', '/', $relative) . '.php';
 
     if (is_file($file)) {
         require $file;
